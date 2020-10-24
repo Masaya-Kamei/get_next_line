@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   _bonus_get_next_line.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:10:44 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 18:15:19 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/24 18:05:02 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ int			get_next_line(int fd, char **line)
 	int			readsize;
 	char		*buf;
 	int			f;
-	static char *save = NULL;
+	static char *save[INT_MAX] = {NULL};
 
 	*line = NULL;
 	if (!(buf = (char *)malloc(BUFFER_SIZE * sizeof(char))))
 		return (-1);
 	while (1)
 	{
-		if ((readsize = read_fd(fd, buf, &save)) == -1)
+		if ((readsize = read_fd(fd, buf, &(save[fd]))) == -1)
 			return (release(&buf, -1));
 		else if (readsize == 0)
 		{
@@ -116,7 +116,7 @@ int			get_next_line(int fd, char **line)
 			else
 				break ;
 		}
-		if ((f = assign_to_line(line, buf, &save, readsize)) == MEM_ERROR)
+		if ((f = assign_to_line(line, buf, &(save[fd]), readsize)) == MEM_ERROR)
 			return (release(&buf, -1));
 		else if (f == END_ASSIGN)
 			break ;
