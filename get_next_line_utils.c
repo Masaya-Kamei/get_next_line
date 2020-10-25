@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:28:20 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 18:04:14 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/24 22:01:03 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	*ft_memset(void *buf, int ch, size_t n)
 	return (buf);
 }
 
-int		ft_strchr_index(const char *s, int c, int readsize)
+int		ft_strchr_index(const char *s, int c)
 {
 	int i;
 
 	i = 0;
-	while (i < readsize)
+	while (s[i] != '\0')
 	{
 		if (s[i] == (unsigned char)c)
 			return (i);
@@ -64,12 +64,12 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (src_len);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(const char *s, int s_len)
 {
 	char	*copy;
 	size_t	len;
 
-	len = ft_strlen(s);
+	len = s_len;
 	if (!(copy = (char *)malloc((len + 1) * sizeof(char))))
 		return (NULL);
 	ft_strlcpy(copy, s, len + 1);

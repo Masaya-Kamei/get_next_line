@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:14:04 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 18:04:38 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/24 22:01:42 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 
 int		get_next_line(int fd, char **line);
 void	*ft_memset(void *buf, int ch, size_t n);
-int		ft_strchr_index(const char *s, int c, int readsize);
+int		ft_strchr_index(const char *s, int c);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strdup(const char *s);
+char	*ft_strdup(const char *s, int s_len);
 
 #endif
