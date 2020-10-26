@@ -5,134 +5,108 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/20 12:10:44 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/25 20:33:51 by mkamei           ###   ########.fr       */
+/*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
+/*   Updated: 2020/10/26 11:57:33 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	release(char **buf, int ret, char **line)
+static char	*ft_substr(char const *s1, unsigned int start, size_t len)
 {
-	if ((ret == 0 || ret == -1 ) && *line == NULL)
-		*line = ft_strdup("", 0);
-	if (buf != NULL)
-	{
-		free(*buf);
-		*buf = NULL;
-	}
-	return (ret);
-}
+	char	*sub;
+	size_t	s_len;
 
-static int	read_fd(int fd, char *buf, char **save)
-{
-	int readsize;
-	int	save_len;
-
-	if (*save != NULL)
-	{
-		save_len = ft_strlen(*save);
-		ft_strlcpy(buf, *save, save_len + 1);
-		free(*save);
-		*save = NULL;
-		readsize = read(fd, buf + save_len, BUFFER_SIZE - save_len);
-
-		if (readsize == -1)
-			return (readsize);
-		readsize += save_len;
-		buf[readsize] = '\0';
-	}
-	else
-	{
-		readsize = read(fd, buf, BUFFER_SIZE);
-		if (readsize == 0 || readsize == -1)
-			return (readsize);
-		buf[readsize] = '\0';
-	}
-	return (readsize);
-}
-
-static char	*ft_strjoin_free(char *buf, char **line, int valid_buf_size)
-{
-	size_t	pre_len;
-	size_t	suf_len;
-	char	*join;
-
-	if (*line == NULL)
-	{
-		if (!(join = (char *)malloc((valid_buf_size + 1) * (sizeof(char)))))
-			return (NULL);
-		ft_strlcpy(join, buf, valid_buf_size + 1);
-		return (join);
-	}
-	pre_len = ft_strlen(*line);
-	suf_len = valid_buf_size;
-	if (!(join = (char *)malloc((pre_len + suf_len + 1) * sizeof(char))))
-	{
-		free(*line);
-		*line = NULL;
+	s_len = ft_strlen(s1);
+	if ((start >= s_len) || len == 0)
+		return (ft_strdup(""));
+	if (s_len < (start + len))
+		len = s_len - start;
+	if (!(sub = (char *)malloc((len + 1) * sizeof(char))))
 		return (NULL);
-	}
-	ft_strlcpy(join, *line, pre_len + 1);
-	ft_strlcpy(join + pre_len, buf, suf_len + 1);
-	free(*line);
-	*line = NULL;
-	return (join);
+	ft_strlcpy(sub, s1 + start, len + 1);
+	return (sub);
 }
 
-static int	assign_to_line(char **line, char *buf, char **save, int readsize)
+static int	create_line(char **line, char **save)
 {
-	int	valid_buf_size;
+	char *new_line_ptr;
+	char *tmp;
 
-	valid_buf_size = ft_strchr_index(buf, '\n');
-	if (!(*line = ft_strjoin_free(buf, line, valid_buf_size)))
-		return (MEM_ERROR);
-	if (valid_buf_size == readsize)
+	new_line_ptr = ft_strchr(*line, '\n');
+	if (new_line_ptr == NULL)
 	{
-		if (readsize < BUFFER_SIZE)
-			return (NOT_NEWLINE_END);
-		ft_memset(buf, '\0', BUFFER_SIZE + 1);
-		return (CONTINUE_ASSIGN);
+		*save = NULL;
+		return (0);
 	}
-	else if (valid_buf_size == (readsize - 1))
-		return (END_ASSIGN);
 	else
 	{
-		if (!(*save = ft_strdup(buf + valid_buf_size + 1, readsize - valid_buf_size)))
-			return (MEM_ERROR);
-		return (END_ASSIGN);
+		tmp = ft_substr(*line, 0, new_line_ptr - *line);
+		*save = ft_substr(new_line_ptr + 1, 0, ft_strlen(new_line_ptr + 1));
+		free(*line);
+		*line = tmp;
+		if (*line == NULL)
+			return (-1);
+		else if (*save == NULL)
+		{
+			free(*line);
+			return (-1);
+		}
+		return (1);
 	}
+}
+
+static int	read_until_include_nl(int fd, char *buf, char **line, char **save)
+{
+	ssize_t	readsize;
+	char	*tmp;
+
+	if (!(*line = ft_strdup(*save)))
+		return (-1);
+	if (ft_strchr(*line, '\n') != NULL)
+		return (1);
+	while ((readsize = read(fd, buf, BUFFER_SIZE)) > 0)
+	{
+		buf[readsize] = '\0';
+		tmp = ft_strjoin(*line, buf);
+		free(*line);
+		*line = tmp;
+		if (*line == NULL)
+			return (-1);
+		if (ft_strchr(*line, '\n') != NULL)
+			return (1);
+	}
+	if (*line[0] == '\0' && readsize == 0)
+		return (0);
+	else if (readsize == 0)
+		return (1);
+	else
+		return (-1);
 }
 
 int			get_next_line(int fd, char **line)
 {
 	int			readsize;
 	char		*buf;
-	int			f;
-	static char *save = NULL;
+	static char *save;
 
-	if (fd < 0 || line == NULL)
-		return (-1);
 	*line = NULL;
-	if (!(buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
-		return (release(NULL, -1, line));
-	while (1)
+	if (fd < 0 || fd >= OPEN_MAX || line == NULL || BUFFER_SIZE <= 0)
+		return (-1);
+	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		return (-1);
+	if (save == NULL)
 	{
-		if ((readsize = read_fd(fd, buf, &save)) == -1)
-			return (release(&buf, -1, line));
-		else if (readsize == 0)
+		if (!(save = ft_strdup("")))
 		{
-			if (*line == NULL)
-				return (release(&buf, 0, line));
-			else
-				break ;
+			free(buf);
+			return (-1);
 		}
-		if ((f = assign_to_line(line, buf, &save, readsize)) == MEM_ERROR)
-			return (release(&buf, -1, line));
-		else if (f == END_ASSIGN)
-			break ;
-		else if (f == NOT_NEWLINE_END)
-			return (release(&buf, 0, line));
 	}
-	return (release(&buf, 1, line));
+	readsize = read_until_include_nl(fd, buf, line, &save);
+	free(buf);
+	free(save);
+	if (readsize <= 0)
+		return (readsize);
+	return (create_line(line, &save));
 }

@@ -5,24 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/20 12:28:20 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 22:01:03 by mkamei           ###   ########.fr       */
+/*   Created: 2020/10/25 17:11:32 by mkamei            #+#    #+#             */
+/*   Updated: 2020/10/26 11:53:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_memset(void *buf, int ch, size_t n)
-{
-	size_t i;
-
-	i = 0;
-	while (i < n)
-		((unsigned char *)buf)[i++] = (unsigned char)ch;
-	return (buf);
-}
-
-int		ft_strchr_index(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	int i;
 
@@ -30,10 +20,12 @@ int		ft_strchr_index(const char *s, int c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == (unsigned char)c)
-			return (i);
+			return (char *)(s + i);
 		i++;
 	}
-	return (i);
+	if (s[i] == '\0' && c == '\0')
+		return (char *)(s + i);
+	return (NULL);
 }
 
 size_t	ft_strlen(const char *s)
@@ -64,14 +56,29 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (src_len);
 }
 
-char	*ft_strdup(const char *s, int s_len)
+char	*ft_strdup(const char *s)
 {
 	char	*copy;
 	size_t	len;
 
-	len = s_len;
+	len = ft_strlen(s);
 	if (!(copy = (char *)malloc((len + 1) * sizeof(char))))
 		return (NULL);
 	ft_strlcpy(copy, s, len + 1);
 	return (copy);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	pre_len;
+	size_t	suf_len;
+	char	*join;
+
+	pre_len = ft_strlen(s1);
+	suf_len = ft_strlen(s2);
+	if (!(join = (char *)malloc((pre_len + suf_len + 1) * sizeof(char))))
+		return (NULL);
+	ft_strlcpy(join, s1, pre_len + 1);
+	ft_strlcpy(join + pre_len, s2, suf_len + 1);
+	return (join);
 }

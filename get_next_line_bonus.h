@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _bonus_get_next_line.h                             :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/20 12:14:04 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 18:05:14 by mkamei           ###   ########.fr       */
+/*   Created: 2020/10/25 17:13:28 by mkamei            #+#    #+#             */
+/*   Updated: 2020/10/26 11:59:27 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <unistd.h>
 # include <stdlib.h>
-
-# define INT_MAX 2147483647
-# define MEM_ERROR -1
-# define END_ASSIGN 0
-# define CONTINUE_ASSIGN 1
+# include <limits.h>
 
 int		get_next_line(int fd, char **line);
-void	*ft_memset(void *buf, int ch, size_t n);
-int		ft_strchr_index(const char *s, int c, int readsize);
+char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strdup(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
