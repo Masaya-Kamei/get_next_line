@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:11:32 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/26 11:53:51 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/26 13:13:04 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,7 @@ size_t	ft_strlen(const char *s)
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t i;
-	size_t src_len;
 
-	src_len = ft_strlen(src);
-	if (size == 0)
-		return (src_len);
 	i = 0;
 	while (i < (size - 1) && src[i] != '\0')
 	{
@@ -53,7 +49,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		i++;
 	}
 	dst[i] = '\0';
-	return (src_len);
+	return (0);
 }
 
 char	*ft_strdup(const char *s)
@@ -68,17 +64,12 @@ char	*ft_strdup(const char *s)
 	return (copy);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_substr(char const *s1, unsigned int start, size_t len)
 {
-	size_t	pre_len;
-	size_t	suf_len;
-	char	*join;
+	char	*sub;
 
-	pre_len = ft_strlen(s1);
-	suf_len = ft_strlen(s2);
-	if (!(join = (char *)malloc((pre_len + suf_len + 1) * sizeof(char))))
+	if (!(sub = (char *)malloc((len + 1) * sizeof(char))))
 		return (NULL);
-	ft_strlcpy(join, s1, pre_len + 1);
-	ft_strlcpy(join + pre_len, s2, suf_len + 1);
-	return (join);
+	ft_strlcpy(sub, s1 + start, len + 1);
+	return (sub);
 }
