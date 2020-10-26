@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:10:44 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/25 10:04:34 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/25 20:33:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	assign_to_line(char **line, char *buf, char **save, int readsize)
 	if (valid_buf_size == readsize)
 	{
 		if (readsize < BUFFER_SIZE)
-			return (END_ASSIGN);
+			return (NOT_NEWLINE_END);
 		ft_memset(buf, '\0', BUFFER_SIZE + 1);
 		return (CONTINUE_ASSIGN);
 	}
@@ -131,6 +131,8 @@ int			get_next_line(int fd, char **line)
 			return (release(&buf, -1, line));
 		else if (f == END_ASSIGN)
 			break ;
+		else if (f == NOT_NEWLINE_END)
+			return (release(&buf, 0, line));
 	}
 	return (release(&buf, 1, line));
 }

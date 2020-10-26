@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 12:14:04 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/24 22:01:42 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/25 20:34:17 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 
 # define INT_MAX 2147483647
+# define NOT_NEWLINE_END -2
 # define MEM_ERROR -1
 # define END_ASSIGN 0
 # define CONTINUE_ASSIGN 1
