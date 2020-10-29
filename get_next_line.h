@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:13:28 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/26 13:13:22 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/29 09:58:18 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <limits.h>
 
 int		get_next_line(int fd, char **line);
 char	*ft_strchr(const char *s, int c);

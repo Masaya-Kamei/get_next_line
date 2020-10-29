@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 13:16:48 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/26 13:19:19 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/10/29 09:58:57 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,9 @@ int			get_next_line(int fd, char **line)
 {
 	int			readsize;
 	char		*buf;
-	static char *save[OPEN_MAX];
+	static char *save[256];
 
-	*line = NULL;
-	if (fd < 0 || fd >= OPEN_MAX || line == NULL || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 256 || line == NULL || BUFFER_SIZE <= 0)
 		return (-1);
 	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
@@ -102,6 +101,7 @@ int			get_next_line(int fd, char **line)
 			return (-1);
 		}
 	}
+	*line = NULL;
 	readsize = read_until_include_nl(fd, buf, line, &(save[fd]));
 	free(buf);
 	free(save[fd]);
