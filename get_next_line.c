@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
-/*   Updated: 2020/10/29 09:57:41 by mkamei           ###   ########.fr       */
+/*   Updated: 2020/11/06 16:00:10 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int			get_next_line(int fd, char **line)
 	readsize = read_until_include_nl(fd, buf, line, &save);
 	free(buf);
 	free(save);
+	save = NULL;
 	if (readsize <= 0)
 		return (readsize);
 	return (create_line(line, &save));
