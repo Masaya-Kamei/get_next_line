@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/26 13:16:48 by mkamei            #+#    #+#             */
-/*   Updated: 2020/11/06 16:01:07 by mkamei           ###   ########.fr       */
+/*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
+/*   Updated: 2020/11/10 20:23:18 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 static char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -34,36 +34,35 @@ static int	create_line(char **line, char **save)
 
 	new_line_ptr = ft_strchr(*line, '\n');
 	if (new_line_ptr == NULL)
-	{
-		*save = NULL;
 		return (0);
-	}
-	else
+	tmp = ft_substr(*line, 0, new_line_ptr - *line);
+	if (tmp == NULL)
 	{
-		tmp = ft_substr(*line, 0, new_line_ptr - *line);
-		*save = ft_substr(new_line_ptr + 1, 0, ft_strlen(new_line_ptr + 1));
 		free(*line);
-		*line = tmp;
-		if (*line == NULL)
-			return (-1);
-		else if (*save == NULL)
-		{
-			free(*line);
-			return (-1);
-		}
-		return (1);
+		return (-1);
 	}
+	*save = ft_substr(new_line_ptr + 1, 0, ft_strlen(new_line_ptr + 1));
+	if (*save == NULL)
+	{
+		free(*line);
+		free(tmp);
+		return (-1);
+	}
+	free(*line);
+	*line = tmp;
+	return (1);
 }
 
-static int	read_until_include_nl(int fd, char *buf, char **line, char **save)
+static int	read_until_include_nl(int fd, char **line)
 {
 	ssize_t	readsize;
 	char	*tmp;
+	char	*buf;
 
-	if (!(*line = ft_strdup(*save)))
-		return (-1);
 	if (ft_strchr(*line, '\n') != NULL)
 		return (1);
+	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		return (-1);
 	while ((readsize = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[readsize] = '\0';
@@ -71,42 +70,37 @@ static int	read_until_include_nl(int fd, char *buf, char **line, char **save)
 		free(*line);
 		*line = tmp;
 		if (*line == NULL)
-			return (-1);
-		if (ft_strchr(*line, '\n') != NULL)
-			return (1);
-	}
-	if (*line[0] == '\0' && readsize == 0)
-		return (0);
-	else if (readsize == 0)
-		return (1);
-	else
-		return (-1);
-}
-
-int			get_next_line(int fd, char **line)
-{
-	int			readsize;
-	char		*buf;
-	static char *save[256];
-
-	if (fd < 0 || fd >= 256 || line == NULL || BUFFER_SIZE <= 0)
-		return (-1);
-	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (-1);
-	if (save[fd] == NULL)
-	{
-		if (!(save[fd] = ft_strdup("")))
 		{
 			free(buf);
 			return (-1);
 		}
+		if (ft_strchr(*line, '\n') != NULL)
+			break ;
 	}
-	*line = NULL;
-	readsize = read_until_include_nl(fd, buf, line, &(save[fd]));
 	free(buf);
-	free(save[fd]);
-	save[fd] = NULL;
-	if (readsize <= 0)
-		return (readsize);
-	return (create_line(line, &(save[fd])));
+	return (readsize);
+}
+
+int			get_next_line(int fd, char **line)
+{
+	static char *save[256];
+
+	if (fd < 0 || fd >= 256 || line == NULL || BUFFER_SIZE <= 0)
+		return (-1);
+	if (save[fd] == NULL)
+	{
+		if (!(*line = ft_strdup("")))
+			return (-1);
+	}
+	else
+	{
+		*line = save[fd];
+		save[fd] = NULL;
+	}
+	if (read_until_include_nl(fd, line) == -1)
+	{
+		free(*line);
+		return (-1);
+	}
+	return (create_line(line, &save[fd]));
 }
