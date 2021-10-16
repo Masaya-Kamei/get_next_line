@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/16 10:29:47 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/16 11:14:51 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ int	get_next_line(int fd, char **line)
 		free(*line);
 		return (-1);
 	}
-	return (create_line(line, &save));
+	return (split_into_line_and_save(line, &save));
 }
