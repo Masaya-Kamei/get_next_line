@@ -37,3 +37,13 @@ jobs:
       - name: Run test
         run: ./run_test.sh
         working-directory: ./unit_tests
+      - name: Checkout 42TESTERS-GNL
+        uses: actions/checkout@v2
+        with:
+          repository: Mazoise/42TESTERS-GNL
+          path: 42TESTERS-GNL
+      - name: run 42TESTERS-GNL
+        run: |
+             ./all_tests_with_bonus.sh | tee result.log
+             ! cat result.log | grep "\[KO\]"
+        working-directory: ./42TESTERS-GNL
