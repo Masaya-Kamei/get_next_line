@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 13:17:43 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/01 12:59:47 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/16 10:28:36 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ size_t	ft_strlen(const char *s)
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
+	size_t	src_len;
 
+	src_len = ft_strlen(src);
+	if (size == 0)
+		return (src_len);
 	i = 0;
 	while (i < (size - 1) && src[i] != '\0')
 	{
@@ -49,7 +53,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		i++;
 	}
 	dst[i] = '\0';
-	return (0);
+	return (src_len);
 }
 
 char	*ft_strdup(const char *s)

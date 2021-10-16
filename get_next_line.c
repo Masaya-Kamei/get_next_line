@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 16:48:13 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/01 12:52:38 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/16 10:29:47 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*ft_strjoin(char const *s1, char const *s2)
 	return (join);
 }
 
-static int	create_line(char **line, char **save)
+static int	split_into_line_and_save(char **line, char **save)
 {
 	char	*new_line_ptr;
 	char	*tmp;
@@ -59,13 +59,13 @@ static int	read_until_include_nl(int fd, char **line)
 	char	*buf;
 	char	*tmp;
 
-	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buf == NULL)
 		return (-1);
 	readsize = 1;
 	while (ft_strchr(*line, '\n') == NULL)
 	{
-		readsize = read(fd, buf, BUFFER_SIZE - 1);
+		readsize = read(fd, buf, BUFFER_SIZE);
 		if (readsize <= 0)
 			break ;
 		buf[readsize] = '\0';

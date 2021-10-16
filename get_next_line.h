@@ -6,7 +6,7 @@
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 17:13:28 by mkamei            #+#    #+#             */
-/*   Updated: 2021/09/01 12:32:37 by mkamei           ###   ########.fr       */
+/*   Updated: 2021/10/16 10:29:15 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 #  define BUFFER_SIZE 100
 # endif
 
+// main
 int		get_next_line(int fd, char **line);
+
+// utils
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
