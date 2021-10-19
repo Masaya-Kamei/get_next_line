@@ -1,6 +1,8 @@
 # 42 get_next_line
 
-Read one line ending with a newline from a file descriptor
+`int		get_next_line(int fd, char **line);`
+
+Read one line ending with a newline from a file descriptor.
 
 ## Usage example
 
