@@ -5,12 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkamei <mkamei@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/08 18:45:54 by mkamei            #+#    #+#             */
-/*   Updated: 2021/10/19 15:34:59 by mkamei           ###   ########.fr       */
+/*   Created: 2021/10/19 15:25:30 by mkamei            #+#    #+#             */
+/*   Updated: 2021/10/19 15:31:32 by mkamei           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "unit_test.h"
+#include "get_next_line.h"
+#include <fcntl.h>
+#include <stdio.h>
 
 static void	cat_file_using_gnl(const int fd)
 {
