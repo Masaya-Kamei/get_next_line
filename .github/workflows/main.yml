@@ -44,6 +44,6 @@ jobs:
           path: 42TESTERS-GNL
       - name: run 42TESTERS-GNL
         run: |
-             ./all_tests_with_bonus.sh | tee result.log
+             ./all_tests.sh | tee result.log
              ! cat result.log | grep "\[KO\]"
         working-directory: ./42TESTERS-GNL
