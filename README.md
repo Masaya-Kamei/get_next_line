@@ -4,7 +4,7 @@ Read one line ending with a newline from a file descriptor.
 
 `int get_next_line(int fd, char **line);`
 
-## Usage example
+## Sample script
 
 ```zsh
 git clone https://github.com/Masaya-Kamei/get_next_line.git;
